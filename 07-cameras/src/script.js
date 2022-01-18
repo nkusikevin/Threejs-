@@ -1,5 +1,8 @@
 import "./style.css";
 import * as THREE from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+
+console.log(OrbitControls);
 
 //Cursor
 const cursor = {
@@ -8,7 +11,7 @@ const cursor = {
 };
 window.addEventListener("mousemove", (e) => {
 	cursor.x = e.clientX / sizes.width - 0.5;
-	cursor.y = (e.clientY / sizes.height - 0.5) * -1
+	cursor.y = (e.clientY / sizes.height - 0.5) * -1;
 });
 
 /**
@@ -55,6 +58,10 @@ camera.position.z = 3;
 camera.lookAt(mesh.position);
 scene.add(camera);
 
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+
 // Renderer
 const renderer = new THREE.WebGLRenderer({
 	canvas: canvas,
@@ -66,14 +73,18 @@ const clock = new THREE.Clock();
 
 const tick = () => {
 	const elapsedTime = clock.getElapsedTime();
+	//animation with OrbitControls
+
+
 	//Update camera
-	camera.position.x = Math.sin(cursor.x * Math.PI) * 2;
-    camera.position.z = Math.cos(cursor.x * Math.PI) * 2;
-    camera.position.y = cursor.y * 3
-    camera.lookAt(mesh.position);
+	// camera.position.x = Math.sin(cursor.x * Math.PI) * 2;
+	// camera.position.z = Math.cos(cursor.x * Math.PI) * 2;
+	// camera.position.y = cursor.y * 3
+	// camera.lookAt(mesh.position);
 	// Update objects
 	// mesh.rotation.y = elapsedTime;
-
+    //update controls
+    controls.update();  // must call this method every frame
 	// Render
 	renderer.render(scene, camera);
 

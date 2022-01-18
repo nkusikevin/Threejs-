@@ -36,7 +36,12 @@ renderer.setSize(sizes.width, sizes.height);
 // let time = Date.now();
 
 //clock
-const clock = new THREE.Clock();
+// const clock = new THREE.Clock();
+
+
+//animations with GSAP
+gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
+gsap.to(mesh.position, { duration: 1, delay: 2, x: 0 });
 
 //animations
 const tick = () => {
@@ -46,13 +51,13 @@ const tick = () => {
 	// time = currentTime;
 
 	//Clock
-	const elapsedTime = clock.getElapsedTime();
+	// const elapsedTime = clock.getElapsedTime();
 
 	requestAnimationFrame(tick);
 
-	camera.position.x = Math.sin(elapsedTime);
-	camera.position.y = Math.cos(elapsedTime);
-	camera.lookAt(mesh.position);
+	// camera.position.x = Math.sin(elapsedTime);
+	// camera.position.y = Math.cos(elapsedTime);
+	// camera.lookAt(mesh.position);
 
 	renderer.render(scene, camera);
 };

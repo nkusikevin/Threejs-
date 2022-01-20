@@ -46,7 +46,21 @@ const scene = new THREE.Scene()
 //  const material = new  THREE.MeshMatcapMaterial()
 //  material.matcap = matcapTexture;
 
-const material =  new THREE.MeshDepthMaterial();
+// const material =  new THREE.MeshDepthMaterial();
+
+// const material = new THREE.MeshLambertMaterial()
+
+const material = new THREE.MeshPhongMaterial()
+material.shininess=100;
+material.specular = new THREE.Color("blue")
+
+//lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(2, 3, 4);
+scene.add(pointLight);
+
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
     material

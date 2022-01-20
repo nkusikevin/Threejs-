@@ -1,7 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { MeshToonMaterial } from 'three';
+
 
 
 
@@ -17,7 +17,7 @@ const doorHeightTexture = textureLoader.load("/textures/door/height.jpg");
 const doorNormalTexture = textureLoader.load("/textures/door/normal.jpg");
 const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
-const matcapTexture = textureLoader.load("/textures/matcaps/1.png");
+const matcapTexture = textureLoader.load("/textures/matcaps/4.png");
 const gradientTexture = textureLoader.load("/textures/gradients/3.jpg");
 
 
@@ -40,8 +40,11 @@ const scene = new THREE.Scene()
 // material.wireframe = true;
 
 
-const material = new THREE.MeshNormalMaterial();
-material.flatShading = true
+// const material = new THREE.MeshNormalMaterial();
+// material.flatShading = true
+ const material = new  THREE.MeshMatcapMaterial()
+ material.matcap = matcapTexture;
+
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
     material

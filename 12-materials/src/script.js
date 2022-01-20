@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { MeshToonMaterial } from 'three';
 
 
 
@@ -33,8 +34,14 @@ const scene = new THREE.Scene()
 
 //Objects
 
-const material = new THREE.MeshBasicMaterial({ map: matcapTexture });
+// const material = new THREE.MeshBasicMaterial();
+// material.map = doorColorTexture;
+// material.color.set = "green"
+// material.wireframe = true;
 
+
+const material = new THREE.MeshNormalMaterial();
+material.flatShading = true
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
     material

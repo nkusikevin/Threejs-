@@ -3,19 +3,40 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 //textures
+//using on load to make sure the texture is loaded before we start rendering
+// const image = new Image()
+// const texture = new THREE.Texture(image)
 
-const image = new Image()
-const texture = new THREE.Texture(image)
+// image.onload=()=>{
+//     texture.needsUpdate = true
+// }
 
-image.onload=()=>{
-    texture.needsUpdate = true
-}
-
-image.src = "/textures/door/color.jpg";
-
-
+// image.src = "/textures/door/color.jpg";
 
 
+//using texture loader to load the texture
+
+const textureLoader = new THREE.TextureLoader()
+const texture = textureLoader.load('/textures/soap.jpg')
+
+// texture.repeat.x =2
+// texture.repeat.y = 3
+
+// texture.wrapS = THREE.RepeatWrapping
+// texture.wrapT = THREE.RepeatWrapping
+
+
+// texture.offset.x = 0.5
+// texture.offset.y = 0.5
+
+
+// texture.rotation = Math.PI/4
+
+// texture.center.x= 0.5
+// texture.center.y = 0.5
+texture.generateMipmaps = false
+texture.minFilter = THREE.NearestFilter
+texture.magFilter = THREE.NearestFilter
 
 /**
  * Base

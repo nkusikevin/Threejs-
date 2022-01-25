@@ -3,6 +3,15 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
+
+//Textures
+
+const textureLoader = new THREE.TextureLoader()
+const simpleShadow = textureLoader.load("./textures/simpleShadow.jpg");
+
+
+
+
 /**
  * Base
  */
@@ -121,6 +130,20 @@ plane.position.y = - 0.5
 plane.receiveShadow = true
 scene.add(sphere, plane)
 
+//baked shadow
+const sphereShadow = new THREE.Mesh(
+	new THREE.PlaneGeometry(1.5, 1.5),
+	new THREE.MeshBasicMaterial({
+		color: 0x000000,
+		transparent: true,
+		alphaMap: simpleShadow,
+	})
+);
+sphereShadow.rotation.x = -Math.PI * 0.5;
+sphereShadow.position.y = plane.position.y + 0.01;
+
+scene.add(sphere, sphereShadow, plane);
+
 /**
  * Sizes
  */
@@ -175,16 +198,27 @@ const clock = new THREE.Clock()
 
 const tick = () =>
 {
-    const elapsedTime = clock.getElapsedTime()
+	const elapsedTime = clock.getElapsedTime();
 
-    // Update controls
-    controls.update()
+	//update sphere
 
-    // Render
-    renderer.render(scene, camera)
+	sphere.position.x = Math.cos(elapsedTime) * 1.5;
+	sphere.position.z = Math.sin(elapsedTime) * 1.5;
+	sphere.position.y = Math.abs(Math.sin(elapsedTime * 3));
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+	// Update the shadow
+	sphereShadow.position.x = sphere.position.x;
+	sphereShadow.position.z = sphere.position.z;
+	sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3;
+
+	// Update controls
+	controls.update();
+
+	// Render
+	renderer.render(scene, camera);
+
+	// Call tick again on the next frame
+	window.requestAnimationFrame(tick);
 }
 
 tick()

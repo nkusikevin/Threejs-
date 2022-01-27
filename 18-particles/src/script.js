@@ -3,6 +3,14 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
+
+
+
+//textures 
+
+const textureLoader = new THREE.TextureLoader()
+const particleTexture =  textureLoader.load('./textures/particles/2.png')
+
 /**
  * Base
  */
@@ -15,17 +23,32 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-/**
- * Textures
- */
-const textureLoader = new THREE.TextureLoader()
 
 //particles
-const particlesGeometry =  new THREE.SphereBufferGeometry(1, 32, 32)
+
+//geomery
+
+const particlesGeometry =  new THREE.BufferGeometry()
+const count = 5000
+
+const positions = new Float32Array(count * 3)//multiply by 3 because each vertex has x,y,z
+
+for(let i = 0; i < count*3; i++){
+positions[i] = (Math.random()-0.5) * 10 //math random gives a number between -0.5 and 10
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+
 const particlesMaterial = new THREE.PointsMaterial({
-    size:0.02,
-    sizeAttenuation:true
+    size:0.1,
+    sizeAttenuation:true,
+    color:'#ff88cc',
 })
+
+particlesMaterial.transparent = true
+particlesMaterial.alphaMap = particleTexture
+particlesMaterial.alphaTest = 0.001
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)

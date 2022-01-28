@@ -32,23 +32,35 @@ const particlesGeometry =  new THREE.BufferGeometry()
 const count = 5000
 
 const positions = new Float32Array(count * 3)//multiply by 3 because each vertex has x,y,z
+const colors = new Float32Array(count * 3);//colours 
 
 for(let i = 0; i < count*3; i++){
 positions[i] = (Math.random()-0.5) * 10 //math random gives a number between -0.5 and 10
 }
 
-particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
 
+for (let i = 0; i < count * 3; i++) {
+	positions[i] = (Math.random() - 0.5) * 10;
+	colors[i] = Math.random();
+}
+
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+particlesGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
 const particlesMaterial = new THREE.PointsMaterial({
     size:0.1,
     sizeAttenuation:true,
-    color:'#ff88cc',
+  
 })
 
 particlesMaterial.transparent = true
 particlesMaterial.alphaMap = particleTexture
-particlesMaterial.alphaTest = 0.001
+// particlesMaterial.alphaTest = 0.001
+// particlesMaterial.depthTest = false
+particlesMaterial.depthWrite = false
+particlesMaterial.blending = THREE.AdditiveBlending
+particlesMaterial.vertexColors = true;
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
@@ -105,7 +117,23 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    //update [particles]
+  
 
+
+    for (let i = 0; i < count; i++) {
+			let i3 = i * 3;
+
+			const x = particlesGeometry.attributes.position.array[i3];
+			particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
+				elapsedTime + x
+			);
+		}
+		particlesGeometry.attributes.position.needsUpdate = true;
+
+
+
+    
     // Update controls
     controls.update()
 

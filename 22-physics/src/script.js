@@ -33,6 +33,32 @@ const environmentMapTexture = cubeTextureLoader.load([
 	"/textures/environmentMaps/0/nz.png",
 ]);
 
+//world
+const world = new CANNON.World();
+world.gravity.set(0, -9.8, 0);
+
+//sphere
+const sphereShape = new CANNON.Sphere(0.5);
+
+//body
+
+const body = new CANNON.Body({
+	mass: 1,
+	shape: sphereShape,
+	position: new CANNON.Vec3(0, 0, 0),
+	velocity: new CANNON.Vec3(0, 0, 0),
+	angularVelocity: new CANNON.Vec3(0, 0, 0),
+	angularDamping: 0.01,
+	linearDamping: 0.01,
+	fixedRotation: true,
+	collisionResponse: true,
+	material: new CANNON.Material({
+		friction: 0.5,
+		restitution: 0.5,
+	}),
+	type: CANNON.Body.STATIC,
+});
+
 /**
  * Test sphere
  */

@@ -44,20 +44,11 @@ const sphereShape = new CANNON.Sphere(0.5);
 
 const body = new CANNON.Body({
 	mass: 1,
+	position: new CANNON.Vec3(0, 3, 0),
 	shape: sphereShape,
-	position: new CANNON.Vec3(0, 0, 0),
-	velocity: new CANNON.Vec3(0, 0, 0),
-	angularVelocity: new CANNON.Vec3(0, 0, 0),
-	angularDamping: 0.01,
-	linearDamping: 0.01,
-	fixedRotation: true,
-	collisionResponse: true,
-	material: new CANNON.Material({
-		friction: 0.5,
-		restitution: 0.5,
-	}),
-	type: CANNON.Body.STATIC,
 });
+
+world.addBody(body);
 
 /**
  * Test sphere
@@ -164,11 +155,19 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 
+let lastElapsedTime = 0;
 const tick = () => {
 	const elapsedTime = clock.getElapsedTime();
+	const deltaTime = elapsedTime - lastElapsedTime;
+	lastElapsedTime = elapsedTime;
 
 	// Update controls
 	controls.update();
+
+	//update physics world
+
+	world.step(1 / 6, deltaTime, 3);
+	sphere.position.copy(body.position);
 
 	// Render
 	renderer.render(scene, camera);

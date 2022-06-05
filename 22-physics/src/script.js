@@ -50,6 +50,15 @@ const body = new CANNON.Body({
 
 world.addBody(body);
 
+//floor
+
+const floorShape = new CANNON.Plane();
+const floorBody = new CANNON.Body();
+floorBody.mass = 0;
+floorBody.addShape(floorShape);
+floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+world.addBody(floorBody);
+
 /**
  * Test sphere
  */

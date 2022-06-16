@@ -2,7 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
  * Base
@@ -15,6 +15,21 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
+
+/**
+ * Models
+ */
+const gltfLoader = new GLTFLoader();
+
+let mixer = null;
+
+gltfLoader.load("/models/kevvv.glb", function (gltf) {
+	gltf.scene.scale.set(1, 1, 1);
+	scene.add(gltf.scene);
+	mixer = new THREE.AnimationMixer(gltf.scene);
+	const action = mixer.clipAction(gltf.animations[0]);
+	action.play();
+});
 
 /**
  * Floor
@@ -46,8 +61,26 @@ directionalLight.shadow.camera.top = 7;
 directionalLight.shadow.camera.right = 7;
 directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(5, 5, 5);
-scene.add(directionalLight);
 
+const spotLight = new THREE.SpotLight(0xffffff, 1);
+spotLight.position.set(15, 40, 35);
+
+spotLight.castShadow = true;
+
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+spotLight.angle = Math.PI / 4;
+spotLight.shadow.camera.near = 50;
+spotLight.shadow.camera.far = 40;
+spotLight.shadow.camera.fov = 3;
+spotLight.distance = 200;
+spotLight.intensity = 1.582;
+spotLight.shadow.focus = 0.521;
+
+scene.add(spotLight);
+
+const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+scene.add(spotLightHelper);
 /**
  * Sizes
  */
@@ -112,6 +145,11 @@ const tick = () => {
 
 	// Update controls
 	controls.update();
+
+	//update mixer
+	if (mixer) {
+		mixer.update(deltaTime);
+	}
 
 	// Render
 	renderer.render(scene, camera);

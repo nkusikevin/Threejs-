@@ -23,11 +23,11 @@ const gltfLoader = new GLTFLoader();
 
 let mixer = null;
 
-gltfLoader.load("/models/kevvv.glb", function (gltf) {
-	gltf.scene.scale.set(1, 1, 1);
+gltfLoader.load("/models/Fox/glTF/Fox.gltf", function (gltf) {
+	gltf.scene.scale.set(0.025, 0.025, 0.025);
 	scene.add(gltf.scene);
 	mixer = new THREE.AnimationMixer(gltf.scene);
-	const action = mixer.clipAction(gltf.animations[0]);
+	const action = mixer.clipAction(gltf.animations[2]);
 	action.play();
 });
 
@@ -62,25 +62,6 @@ directionalLight.shadow.camera.right = 7;
 directionalLight.shadow.camera.bottom = -7;
 directionalLight.position.set(5, 5, 5);
 
-const spotLight = new THREE.SpotLight(0xffffff, 1);
-spotLight.position.set(15, 40, 35);
-
-spotLight.castShadow = true;
-
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
-spotLight.angle = Math.PI / 4;
-spotLight.shadow.camera.near = 50;
-spotLight.shadow.camera.far = 40;
-spotLight.shadow.camera.fov = 3;
-spotLight.distance = 200;
-spotLight.intensity = 1.582;
-spotLight.shadow.focus = 0.521;
-
-scene.add(spotLight);
-
-const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-scene.add(spotLightHelper);
 /**
  * Sizes
  */
